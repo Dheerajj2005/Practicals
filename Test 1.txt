@@ -1,0 +1,260 @@
+///////////////////
+
+///////////////////
+
+///////////////////
+exp3 create DB using DDL & apply integrity constraints
+//////////////////
+sudo mysql -u root -p
+show databases; 
+create database Flight;
+use databasename;
+create table flight(
+f_id int(10) primary key,
+src varchar(20),
+dest varchar(20),
+arr_t varchar(10),
+dep_t varchar(10),
+arr_d varchar(10),
+dep_d varchar(10)
+ );
+desc Flight;
+rename table flight to airlines;
+desc airlines;
+alter table airlines add no_of_seats int(5);
+desc airlines;
+alter table airlines modify arr_d date;
+desc airlines;
+alter table airlines drop no_of_seats;
+desc airlines;
+truncate table airlines;
+desc airlines;
+drop table airlines;
+desc airlines;
+
+/////////////////////
+exp4 APply DML command for system
+/////////////////////
+
+sudo mysql -u root -p
+show databases;
+create database airlines;
+use airlines;
+create table   flight(
+    f_id int(30) primary key,
+    src varchar(20),
+    dest varchar(20),
+    arr_date
+);
+desc flight;
+insert into flight(f_id,src,dest,arr_date) values (1890,'Mumbai','Delhi','2025-01-22');
+[insert 4 more values in similar query format]
+select * from flight;
+update flight 
+   set src = 'Hyd'
+   where dest = 'Goa';
+select * from flight;
+delete from flight;
+   where f_id=5096;
+select * from flight;
+
+///////////////////
+exp 5 simple queries,string manipulative & aggregate functions
+///////////////////
+
+sudo mysql -u root -p
+show databases;
+use airlines;
+select ascii('t');
+select char_length('Hello');
+select character_length ('geeks for geeks');
+select 'geeks'||''||'for geeks' from dual;
+select concat_ws('_','geeks','for','geeks');
+select find_in_set('b','a,b,c,d,e,f');
+insert into customer values(102,'nilesh',5768);
+  select * from customer;
+select instr('geeks for geeks','e');
+select lcase("Geeks For Geeks To Learn");
+select left ('geeksforgeeks.org',5);
+select length ('GeeksforGeeks!);
+select locate('for','geeksforgeeks',1);
+select lower ('GEEKSFORGEEKS.ORG');
+select LPAD('geeks',8,'0');
+select ltrim('SQL Tutorial') as lefttrimmedstring;
+select mid("SQL Tutorial",5,3) as extractstring;
+select position ('e' in 'customer');
+select repeat ('geeks',2);
+select replace ('OMKAR SHINTRE','T','M');
+select reverse ('geeksforgeeks.org');
+select right('geeksforgeeks.org',4);
+select rpad('geeks',8,'0');
+select rtrim('SQL Tutorial') as righttrimmedstring;
+select space(7);
+select strcmp('google.com','geeksforgeeks.com');
+select substr('geeksforgeeks',1,5);
+select substring('GeeksForGeeks.org',9,1);
+select substring_index("www.w3schools.com",".",1);
+select trim(leading'0'from'0000123');
+select ucase("GeeksForGeeks");
+desc customer;
+select*from customer;
+select count(*) from customer where c_id = '101';
+select min (c_phone) from customer;
+select max (c_phone) from customer;
+select avg (c_phone) from customer;
+select sum (c_phone) from customer;
+select c_name from customer group by c_name;
+select c_id,c_name,c_phone from customer order by c_id;
+select c_id,c_name,c_phone from  customer where c_name = 0 order by c_id;
+
+/////////////////// 
+exp 6 implement various join operations
+///////////////////
+
+sudo mysql -u root -p
+show databases;
+create database airlines;
+use airlines;
+create table   flight(
+    f_id int(30) primary key,
+    source varchar(20),
+    destination varchar(20),
+    date varchar(10)
+);
+desc flight;
+insert into flight(f_id,source,destination,date) values (101,'Mumbai','Delhi','2025-01-22');
+[insert 4 more values in similar query format]
+select * from flight;
+create table   pilot(
+    p_id int(10) primary key,
+    p_name varchar(20),
+    p_salary varchar(20),
+    f_id int(10)
+);
+desc pilot;
+insert into pilot(p_id,p_name,p_salary,f_id) values (01,'ABC',500000,101);
+[insert 4 more values in similar query format]
+select * from pilot;
+select flight.f_id,flight.destination,pilot.p_name from flight inner join pilot on flight.f_id=pilot.f_id;
+select flight.f_id,flight.source,flight.destination.pilot.p_id,pilot .p_salary from flight right join pilot on flight.f_id=pilot.f_id;
+select flight.f_id,flight.destination,pilot.p_name from flight left join pilot on flight.f_id=pilot.f_id;  
+
+////////////////////
+exp 7 Perform Nested and Complex queries
+////////////////////
+
+sudo mysql -u root -p
+show databases;
+create database airlines;
+use airlines;
+create table   flight(
+    f_id int(30) primary key,
+    source varchar(20),
+    destination varchar(20),
+    date varchar(10)
+);
+desc flight;
+insert into flight(f_id,source,destination,date) values (101,'Mumbai','Delhi','2025-01-22');
+[insert 4 more values in similar query format]
+create table   pilot(
+    p_id int(10) primary key,
+    p_name varchar(20),
+    p_salary varchar(20),
+    f_id int(10)
+);
+desc pilot;
+insert into pilot(p_id,p_name,p_salary,f_id) values (01,'ABC',500000,101);
+[insert 4 more values in similar query format]
+select * from flight;
+select * from pilot;
+select f_id,destination from flight where f_id in (select f_id from flight);
+select f_id,destination from flight where f_id NOT in (select f_id from pilot);
+select * from pilot where f_id='101' and f_id > all (select source from flights where destination='pune');
+select * from flight where destination = 'Goa' and f_id > any (select p_exp from pilot where p_name='Ansh');
+ 
+/////////////////////////
+exp 8 Perform DCL and TCL commands 
+////////////////////////
+
+sudo mysql -u root -p
+show databases;
+create database sample1;
+use sample1;
+create table product (p_id int primary key ,p_name varchar(50)not null,price int not null);
+GRANT SELECT ,INSERT ON sample1.product To 'Icona'@'localhost';
+INSERT INTO sample1.product(p_id,p_name,price) values(1234,'brush',20);
+select * from sample1.product;
+GRANT ALL PRIVILEGES ON sample1.* To 'Icona'@'localhost';
+show GRANTS FOR 'Icona'@'localhost';
+GRANT ALL ON sample2.*To'Icona'@'localhost';
+show GRANTS for 'Icona'@'localhost';
+REVOKE ALL PRIVILEGES ON sample2.*FROM 'Icona'@'localhost';
+show GRANTS FOR 'Icona'@'localhost';
+create table pass_details(user_id int (10),p_name varchar(10),phone_no int (10),age int(3));
+select*from pass_details;
+update pass_details set p_name='Aarya' where p_name='ary';
+rollback;
+select * from sample1.pass_details;
+update pass_details set p_name='Aarya' where p_name='ary';
+select * from sample1.pass_details;
+
+////////////////////////////
+exp 9 Procedure and function
+////////////////////////////
+sudo mysql -u root -p
+CREATE DATABASE company;
+USE company;
+CREATE TABLE EMP (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), salary DECIMAL(10, 2));
+INSERT INTO EMP VALUES (1, 'Alice', 50000);
+INSERT INTO EMP VALUES (2, 'Bob', 60000);
+INSERT INTO EMP VALUES (3, 'Charlie', 55000);
+DELIMITER //
+CREATE PROCEDURE GetSalary(IN empId INT) BEGIN SELECT salary FROM EMP WHERE emp_id = empId; END //
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE GetEmpName(IN empId INT, OUT empName VARCHAR(100)) BEGIN SELECT emp_name
+INTO empName FROM EMP WHERE emp_id = empId; END //
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE UpdateSalary(INOUT empId INT, IN increment DECIMAL(10,2)) BEGIN UPDATE EMP SET
+salary = salary + increment WHERE emp_id = empId; END //
+DELIMITER ;
+CALL GetSalary(1);
+SET @name = '';
+CALL GetEmpName(2, @name);
+SELECT @name;
+SET @empId = 3;
+CALL UpdateSalary(@empId, 2000);
+SELECT * FROM EMP WHERE emp_id = @empId;
+ 
+ ///////////////////////////////////////////////////////////////
+
+Exp 10: Views and trigger 
+
+sudo mysql -u root -p
+CREATE DATABASE college;
+USE college;
+CREATE TABLE Student (id INT PRIMARY KEY, name VARCHAR(100), dept VARCHAR(50), marks INT);
+INSERT INTO Student VALUES (1, 'Alice', 'CS', 85);
+INSERT INTO Student VALUES (2, 'Bob', 'IT', 78);
+INSERT INTO Student VALUES (3, 'Charlie', 'CS', 92);
+CREATE VIEW CS_Students AS SELECT * FROM Student WHERE dept = 'CS';
+UPDATE CS_Students SET marks = 95 WHERE id = 1;
+CREATE VIEW HighScorers AS SELECT * FROM Student WHERE marks > 80 WITH CHECK OPTION;
+DROP VIEW CS_Students;
+DELIMITER //
+CREATE TRIGGER before_insert_student BEFORE INSERT ON Student FOR EACH ROW BEGIN IF NEW.marks < 0
+THEN SET NEW.marks = 0; END IF; END; //
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER after_insert_student AFTER INSERT ON Student FOR EACH ROW BEGIN INSERT INTO logs
+VALUES (NEW.id, 'Inserted'); END; //
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER before_update_student BEFORE UPDATE ON Student FOR EACH ROW BEGIN IF NEW.marks >
+100 THEN SET NEW.marks = 100; END IF; END; //
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER after_delete_student AFTER DELETE ON Student FOR EACH ROW BEGIN INSERT INTO logs
+VALUES (OLD.id, 'Deleted'); END; //
+DELIMITER ;
